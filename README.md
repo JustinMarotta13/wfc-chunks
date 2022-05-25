@@ -1,5 +1,6 @@
 # wfc-chunks
 An implementation of SunnyValleyStudio's wave function collapse algorithm to create a map of chunks.
+https://github.com/SunnyValleyStudio/WaveFunctionCollapseUnityTilemapTutorial
 
 
 ### Unity Version 2021.3.0f1
