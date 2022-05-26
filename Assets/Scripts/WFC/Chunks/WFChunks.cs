@@ -70,6 +70,7 @@ namespace WaveFunctionCollapse
             {
                 this.outputWidth++;
                 this.chunk.hasLeftNeighbor = true;
+                this.chunk.left = chunkMap.GetChunk(new ChunkCoordinate(chunkLocation.x - 1, chunkLocation.y));
             }
 
             bool hasRightNeighbor = chunkMap.ChunkHasRightNeighbor(chunkLocation);
@@ -77,6 +78,7 @@ namespace WaveFunctionCollapse
             {
                 this.outputWidth++;
                 this.chunk.hasRightNeighbor = true;
+                this.chunk.right = chunkMap.GetChunk(new ChunkCoordinate(chunkLocation.x + 1, chunkLocation.y));
             }
 
             bool hasTopNeighbor = chunkMap.ChunkHasTopNeighbor(chunkLocation);
@@ -84,6 +86,7 @@ namespace WaveFunctionCollapse
             {
                 this.outputHeight++;
                 this.chunk.hasTopNeighbor = true;
+                this.chunk.above = chunkMap.GetChunk(new ChunkCoordinate(chunkLocation.x, chunkLocation.y + 1));
             }
 
             bool hasBottomNeighbor = chunkMap.ChunkHasBottomNeighbor(chunkLocation);
@@ -91,6 +94,7 @@ namespace WaveFunctionCollapse
             {
                 this.outputHeight++;
                 this.chunk.hasBottomNeighbor = true;
+                this.chunk.below = chunkMap.GetChunk(new ChunkCoordinate(chunkLocation.x, chunkLocation.y - 1));
             }
         }
     }

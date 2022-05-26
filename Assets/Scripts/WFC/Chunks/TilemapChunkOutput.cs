@@ -29,7 +29,7 @@ namespace WaveFunctionCollapse
             outputImage.ClearAllTiles();
 
             int[][] valuesGrid = patternManager.ConvertPatternToValues<TileBase>(outputValues);
-            //valuesGrid = RemoveBordersFromChunk(valuesGrid, chunk);
+            valuesGrid = RemoveBordersFromChunk(valuesGrid, chunk);
 
             for (int row = 0; row < valuesGrid.Length; row++)
             {

@@ -11,8 +11,8 @@ namespace WaveFunctionCollapse
         public Tilemap inputImage;
         public Grid gridObject;
 
-        [Tooltip("For tiles usualy set to 1. If tile contain just a color can set to higher value")]
-        public int patternSize;
+        // [Tooltip("For tiles usualy set to 1. If tile contain just a color can set to higher value")]
+        // public int patternSize;
 
         [Tooltip("How many times algorithm will try creating the output before quiting")]
         public int maxIterations;
@@ -38,7 +38,7 @@ namespace WaveFunctionCollapse
             {
                 for (int y = 0; y < dimensionOfChunks.y; y++)
                 {
-                    WFChunks wfc = new WFChunks(this.inputImage, patternSize, this.chunkSize - 1, this.maxIterations, this.equalWeights, chunkMap, new ChunkCoordinate(x, y));
+                    WFChunks wfc = new WFChunks(this.inputImage, 1, this.chunkSize, this.maxIterations, this.equalWeights, chunkMap, new ChunkCoordinate(x, y));
                     wfc.CreateNewTilemap(gridObject);
                     Chunk chunk = wfc.GetOutputTileMap();
                     chunkMap.AddChunk(new ChunkCoordinate(x, y), chunk);
@@ -63,7 +63,7 @@ namespace WaveFunctionCollapse
 
         private void TranslateChunk(GameObject chunk, int x, int y)
         {
-            chunk.transform.Translate(new Vector3(x * (chunkSize *2), y * (chunkSize *2), 0));
+            chunk.transform.Translate(new Vector3(x * (chunkSize), y * (chunkSize), 0));
         }
     }
 }

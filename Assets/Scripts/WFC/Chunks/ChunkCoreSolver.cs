@@ -107,20 +107,11 @@ namespace WaveFunctionCollapse
             if (left != null)
             {
                 left.hasRightNeighbor = true;
-                for (int i = 0; i < outputGrid.height; i++)
+                int yOffset = chunk.below != null ? 1 : 0;
+                for (int i = yOffset; i < outputGrid.height; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(0, i);
-                    Debug.Log("Left neighbor found is: " + "(" + left.chunkLocation.x + "," + left.chunkLocation.y + ")"
-                                + " for chunk: " + "(" + chunkLocation.x + "," + chunkLocation.y + ")" + " and has index " + left.rightBorder[i] + " at row " + i);
-                    outputGrid.SetPatternOnPosition(cellCoordinates.x, cellCoordinates.y, left.rightBorder[i]);
-                    propagationHelper.RemoveCellFromEntropySet(cellCoordinates);
-                    if (coreHelper.HasSolutionForCollisions(cellCoordinates, outputGrid) == false)
-                    {
-                        propagationHelper.AddNewPairsToPropagateQueueLeft(cellCoordinates);
-                        return;
-                    }
-                    else propagationHelper.SetConflictFlag();
-                    solver.Propagate();
+                    SetPatternAndPropogate(cellCoordinates, solver, left.rightBorder[i]);
                 }
             }
 
@@ -128,18 +119,11 @@ namespace WaveFunctionCollapse
             if (right != null)
             {
                 right.hasLeftNeighbor = true;
-                for (int i = 0; i < outputGrid.height; i++)
+                int yOffset = chunk.below != null ? 1 : 0;
+                for (int i = yOffset; i < outputGrid.height; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(outputGrid.width - 1, i);
-                    outputGrid.SetPatternOnPosition(cellCoordinates.x, cellCoordinates.y, right.leftBorder[i]);
-                    propagationHelper.RemoveCellFromEntropySet(cellCoordinates);
-                    if (coreHelper.HasSolutionForCollisions(cellCoordinates, outputGrid) == false)
-                    {
-                        propagationHelper.AddNewPairsToPropagateQueueRight(cellCoordinates);
-                        return;
-                    }
-                    else propagationHelper.SetConflictFlag();
-                    solver.Propagate();
+                    SetPatternAndPropogate(cellCoordinates, solver, right.leftBorder[i]);
                 }
             }
 
@@ -147,18 +131,11 @@ namespace WaveFunctionCollapse
             if (top != null)
             {
                 top.hasBottomNeighbor = true;
-                for (int i = 0; i < outputGrid.width; i++)
+                int xOffset = chunk.left != null ? 1 : 0;
+                for (int i = xOffset; i < outputGrid.width; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(i, outputGrid.height - 1);
-                    outputGrid.SetPatternOnPosition(cellCoordinates.x, cellCoordinates.y, top.bottomBorder[i]);
-                    propagationHelper.RemoveCellFromEntropySet(cellCoordinates);
-                    if (coreHelper.HasSolutionForCollisions(cellCoordinates, outputGrid) == false)
-                    {
-                        propagationHelper.AddNewPairsToPropagateQueueTop(cellCoordinates);
-                        return;
-                    }
-                    else propagationHelper.SetConflictFlag();
-                    solver.Propagate();
+                    SetPatternAndPropogate(cellCoordinates, solver, top.bottomBorder[i]);
                 }
             }
 
@@ -166,20 +143,27 @@ namespace WaveFunctionCollapse
             if (bottom != null)
             {
                 bottom.hasTopNeighbor = true;
-                for (int i = 0; i < outputGrid.width; i++)
+                int xOffset = chunk.left != null ? 1 : 0;
+                for (int i = xOffset; i < outputGrid.width; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(i, 0);
-                    outputGrid.SetPatternOnPosition(cellCoordinates.x, cellCoordinates.y, bottom.topBorder[i]);
-                    propagationHelper.RemoveCellFromEntropySet(cellCoordinates);
-                    if (coreHelper.HasSolutionForCollisions(cellCoordinates, outputGrid) == false)
-                    {
-                        propagationHelper.AddNewPairsToPropagateQueueBottom(cellCoordinates);
-                        return;
-                    }
-                    else propagationHelper.SetConflictFlag();
-                    solver.Propagate();
+                    SetPatternAndPropogate(cellCoordinates, solver, bottom.topBorder[i]);
                 }
             }
+        }
+
+        private void SetPatternAndPropogate(Vector2Int cellCoordinates, ChunkCoreSolver solver, int patternIndex)
+        {
+            if (solver.outputGrid.IsCellCollapsed(cellCoordinates)) return;
+            outputGrid.SetPatternOnPosition(cellCoordinates.x, cellCoordinates.y, patternIndex);
+            propagationHelper.RemoveCellFromEntropySet(cellCoordinates);
+            if (coreHelper.HasSolutionForCollisions(cellCoordinates, outputGrid) == false)
+            {
+                propagationHelper.AddNewPairsToPropagateQueue(cellCoordinates, cellCoordinates);
+                return;
+            }
+            else propagationHelper.SetConflictFlag();
+            Propagate();
         }
 
         public bool IsSolved()

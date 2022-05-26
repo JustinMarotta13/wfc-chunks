@@ -28,7 +28,7 @@ namespace WaveFunctionCollapse
 
         public bool ChunkHasLeftNeighbor(ChunkCoordinate chunkCoordinate)
         {
-            //Debug.Log("Has left neighbor: " + chunkMap.ContainsKey(new ChunkCoordinate(chunkCoordinate.x - 1, chunkCoordinate.y)));
+            Debug.Log("Has left neighbor: " + chunkMap.ContainsKey(new ChunkCoordinate(chunkCoordinate.x - 1, chunkCoordinate.y)));
             return chunkMap.ContainsKey(new ChunkCoordinate(chunkCoordinate.x - 1, chunkCoordinate.y));
         }
 

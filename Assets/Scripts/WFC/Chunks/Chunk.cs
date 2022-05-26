@@ -46,6 +46,11 @@ namespace WaveFunctionCollapse
         public int[] leftBorder;
         public int[] rightBorder;
 
+        public Chunk left;
+        public Chunk right;
+        public Chunk above;
+        public Chunk below;
+
         public bool hasLeftNeighbor;
         public bool hasRightNeighbor;
         public bool hasTopNeighbor;
