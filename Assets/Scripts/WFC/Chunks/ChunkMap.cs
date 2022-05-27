@@ -7,6 +7,11 @@ namespace WaveFunctionCollapse
     {
         private Dictionary<ChunkCoordinate, Chunk> chunkMap = new Dictionary<ChunkCoordinate, Chunk>();
 
+        public bool ContainsChunk(int x, int y)
+        {
+            return chunkMap.ContainsKey(new ChunkCoordinate(x, y));
+        }
+
         public void AddChunk(ChunkCoordinate chunkCoordinate, Chunk chunk)
         {
             chunkMap.Add(chunkCoordinate, chunk);
@@ -24,6 +29,17 @@ namespace WaveFunctionCollapse
         public Chunk GetChunk(int x, int y)
         {
             return GetChunk(new ChunkCoordinate(x, y));
+        }
+
+        public Chunk RemoveChunk(int x, int y)
+        {
+            if (chunkMap.ContainsKey(new ChunkCoordinate(x, y)))
+            {
+                Chunk chunk = chunkMap[new ChunkCoordinate(x, y)];
+                chunkMap.Remove(new ChunkCoordinate(x, y));
+                return chunk;
+            }
+            return null;
         }
 
         public bool ChunkHasLeftNeighbor(ChunkCoordinate chunkCoordinate)

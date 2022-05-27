@@ -111,7 +111,7 @@ namespace WaveFunctionCollapse
                 for (int i = yOffset; i < outputGrid.height; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(0, i);
-                    SetPatternAndPropogate(cellCoordinates, solver, left.rightBorder[i]);
+                    SetPatternAndPropogate(cellCoordinates, solver, left.rightBorder[i - yOffset], chunk);
                 }
             }
 
@@ -123,7 +123,7 @@ namespace WaveFunctionCollapse
                 for (int i = yOffset; i < outputGrid.height; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(outputGrid.width - 1, i);
-                    SetPatternAndPropogate(cellCoordinates, solver, right.leftBorder[i]);
+                    SetPatternAndPropogate(cellCoordinates, solver, right.leftBorder[i - yOffset], chunk);
                 }
             }
 
@@ -135,7 +135,7 @@ namespace WaveFunctionCollapse
                 for (int i = xOffset; i < outputGrid.width; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(i, outputGrid.height - 1);
-                    SetPatternAndPropogate(cellCoordinates, solver, top.bottomBorder[i]);
+                    SetPatternAndPropogate(cellCoordinates, solver, top.bottomBorder[i - xOffset], chunk);
                 }
             }
 
@@ -147,19 +147,22 @@ namespace WaveFunctionCollapse
                 for (int i = xOffset; i < outputGrid.width; i++)
                 {
                     Vector2Int cellCoordinates = new Vector2Int(i, 0);
-                    SetPatternAndPropogate(cellCoordinates, solver, bottom.topBorder[i]);
+                    SetPatternAndPropogate(cellCoordinates, solver, bottom.topBorder[i - xOffset], chunk);
                 }
             }
         }
 
-        private void SetPatternAndPropogate(Vector2Int cellCoordinates, ChunkCoreSolver solver, int patternIndex)
+        private void SetPatternAndPropogate(Vector2Int cellCoordinates, ChunkCoreSolver solver, int patternIndex, Chunk chunk)
         {
             if (solver.outputGrid.IsCellCollapsed(cellCoordinates)) return;
             outputGrid.SetPatternOnPosition(cellCoordinates.x, cellCoordinates.y, patternIndex);
             propagationHelper.RemoveCellFromEntropySet(cellCoordinates);
             if (coreHelper.HasSolutionForCollisions(cellCoordinates, outputGrid) == false)
             {
-                propagationHelper.AddNewPairsToPropagateQueue(cellCoordinates, cellCoordinates);
+                if (chunk.left!= null) propagationHelper.AddNewPairsToPropagateQueueLeft(cellCoordinates);
+                if (chunk.right != null) propagationHelper.AddNewPairsToPropagateQueueRight(cellCoordinates);
+                if (chunk.above != null) propagationHelper.AddNewPairsToPropagateQueueTop(cellCoordinates);
+                if (chunk.below != null) propagationHelper.AddNewPairsToPropagateQueueBottom(cellCoordinates);
                 return;
             }
             else propagationHelper.SetConflictFlag();

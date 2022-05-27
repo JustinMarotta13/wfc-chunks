@@ -35,18 +35,18 @@ namespace WaveFunctionCollapse
             {
                 solver.SetBorderingCellsToOutputGrid(chunkMap, chunk, solver);
 
-                //int innerIteration = 100;
+                int innerIteration = 500;
                 while (!solver.HasConflicts() && !solver.IsSolved())
                 {
                     Vector2Int position = solver.GetLowestEntropyCell();
                     solver.CollapseCell(position, chunk);
                     solver.Propagate();
-                    // innerIteration--;
-                    // if (innerIteration <= 0)
-                    // {
-                    //     Debug.Log("Propagation is taking too long");
-                    //     return new int[0][];
-                    // }
+                    innerIteration--;
+                    if (innerIteration <= 0)
+                    {
+                        Debug.Log("Propagation is taking too long");
+                        return new int[0][];
+                    }
                 }
                 
                 if (solver.HasConflicts())
@@ -97,30 +97,46 @@ namespace WaveFunctionCollapse
                     if (virtualX == 0)
                     {
                         chunk.leftBorder[virtualY] = patternIndex;
-                        // Debug.Log("virtualY is " + virtualY );
-                        // Debug.Log("Left border at " + virtualY + ": " + patternIndex);
+                        Debug.Log("Left border at " + virtualY + ": " + patternIndex);
                     }
-                    if (virtualX == columns - 1)
+                    if (virtualX + leftOffset == columns - 1)
                     {
                         chunk.rightBorder[virtualY] = patternIndex;
-                        // Debug.Log("virtualY is " + virtualY);
-                        // Debug.Log("Right border at " + virtualY + ": " + patternIndex);
+                        Debug.Log("Right border at " + virtualY + ": " + patternIndex);
                     }
-                    if (virtualY == rows - 1)
+                    if (virtualY + bottomOffset == rows - 1)
                     {
                         chunk.topBorder[virtualX] = patternIndex;
-                        // Debug.Log("virtualX is " + virtualX);
-                        // Debug.Log("Top border at " + virtualX + ": " + patternIndex);
+                        Debug.Log("Top border at " + virtualX + ": " + patternIndex);
                     }
                     if (virtualY == 0)
                     {
                         chunk.bottomBorder[virtualX] = patternIndex;
-                        // Debug.Log("virtualX is " + virtualX);
-                        // Debug.Log("Bottom border at " + virtualX + ": " + patternIndex);
+                        Debug.Log("Bottom border at " + virtualX + ": " + patternIndex);
                     }
                 }
             }
         }
+
+        // private void SetBorderIndex(Chunk chunk, int x, int y, int patternIndex)
+        // {
+        //     if (x == 0)
+        //     {
+        //         chunk.leftBorder[y] = patternIndex;
+        //     }
+        //     if (x == chunk.width - 1)
+        //     {
+        //         chunk.rightBorder[y] = patternIndex;
+        //     }
+        //     if (y == chunk.height - 1)
+        //     {
+        //         chunk.topBorder[x] = patternIndex;
+        //     }
+        //     if (y == 0)
+        //     {
+        //         chunk.bottomBorder[x] = patternIndex;
+        //     }
+        // }
 
         struct Conditions
         {

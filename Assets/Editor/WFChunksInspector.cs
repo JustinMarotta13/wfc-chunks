@@ -14,12 +14,17 @@ namespace WaveFunctionCollapse
 
             ChunkGenerator generator = (ChunkGenerator)target;
             
-            if (GUILayout.Button("Generate chunks"))
+            if (GUILayout.Button("Generate Grid of Chunks"))
             {
                 generator.GenerateChunks();
             }
 
-            if (GUILayout.Button("Save tilemap")) generator.SaveTilemap();
+            if (GUILayout.Button("Generate Chunk"))
+            {
+                generator.AddChunk();
+            }
+
+            //if (GUILayout.Button("Save tilemap")) generator.SaveTilemap();
         }
     }
 }

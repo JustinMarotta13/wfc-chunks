@@ -48,6 +48,7 @@ MonoBehaviour:
   gridObject: {fileID: 0}
   patternSize: 2
   maxIterations: 1000
-  chunkSize: 4
-  dimensionOfChunks: {x: 2, y: 2}
   equalWeights: 0
+  chunkSize: 3
+  dimensionOfChunks: {x: 2, y: 2}
+  chunkCoordinateToAdd: {x: 0, y: 0}
