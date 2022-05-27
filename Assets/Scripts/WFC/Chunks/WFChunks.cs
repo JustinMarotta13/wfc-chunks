@@ -38,7 +38,7 @@ namespace WaveFunctionCollapse
             if (chunkLocation.Equals(0, 0) == false) AdjustOutputHeightWidthAccordingToNeighboringChunks();
         }
 
-        public void CreateNewTilemap(Grid gridObject)
+        public void CreateNewTilemap()
         {
             Debug.Log("Creating New Tilemap");
             // Get the tiles as jagged array of values
@@ -53,7 +53,7 @@ namespace WaveFunctionCollapse
 
             ChunkCore core = new ChunkCore(this.outputWidth, this.outputHeight, patternManager, this.maxIterations);
             int[][] outputValues = core.CreateOutputGrid(chunkMap, chunk);
-            tileOutput = new TilemapChunkOutput(valuesManager, gridObject);
+            tileOutput = new TilemapChunkOutput(valuesManager);
             tileOutput.CreateOutput(patternManager, outputValues, outputWidth, outputHeight, chunk);
         }
 

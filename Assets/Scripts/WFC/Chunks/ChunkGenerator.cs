@@ -9,7 +9,7 @@ namespace WaveFunctionCollapse
     public class ChunkGenerator : MonoBehaviour
     {
         public Tilemap inputImage;
-        public Grid gridObject;
+        public GameObject container;
 
         [Tooltip("For tiles usualy set to 1. If tile contain just a color can set to higher value")]
         public int patternSize;
@@ -31,6 +31,11 @@ namespace WaveFunctionCollapse
 
         private ChunkMap chunkMap;
 
+        private void Start()
+        {
+            GenerateChunks();
+        }
+
         public void GenerateChunks()
         {
             Debug.Log("Generating chunks");
@@ -42,10 +47,11 @@ namespace WaveFunctionCollapse
                 for (int y = 0; y < dimensionOfChunks.y; y++)
                 {
                     WFChunks wfc = new WFChunks(this.inputImage, patternSize, this.chunkSize, this.maxIterations, this.equalWeights, chunkMap, new ChunkCoordinate(x, y));
-                    wfc.CreateNewTilemap(gridObject);
+                    wfc.CreateNewTilemap();
                     Chunk chunk = wfc.GetOutputTileMap();
                     chunkMap.AddChunk(new ChunkCoordinate(x, y), chunk);
                     chunk.gameObject.name = "Chunk_" + x + "_" + y;
+                    chunk.gameObject.transform.parent = container.transform;
                     TranslateChunk(chunk.gameObject, x, y);
                     Debug.Log("Generated chunk (" + x + ", " + y + ")");
                 }
@@ -60,10 +66,11 @@ namespace WaveFunctionCollapse
                 chunkMap.RemoveChunk(chunkCoordinateToAdd.x, chunkCoordinateToAdd.y);
             }
             WFChunks wfc = new WFChunks(this.inputImage, 1, this.chunkSize, this.maxIterations, this.equalWeights, chunkMap, new ChunkCoordinate(chunkCoordinateToAdd.x, chunkCoordinateToAdd.y));
-            wfc.CreateNewTilemap(gridObject);
+            wfc.CreateNewTilemap();
             Chunk chunk = wfc.GetOutputTileMap();
             chunkMap.AddChunk(new ChunkCoordinate(chunkCoordinateToAdd.x, chunkCoordinateToAdd.y), chunk);
             chunk.gameObject.name = "Chunk_" + chunkCoordinateToAdd.x + "_" + chunkCoordinateToAdd.y;
+            chunk.gameObject.transform.parent = container.transform;
             TranslateChunk(chunk.gameObject, chunkCoordinateToAdd.x, chunkCoordinateToAdd.y);
             Debug.Log("Generated chunk (" + chunkCoordinateToAdd.x + ", " + chunkCoordinateToAdd.y + ")");
         }

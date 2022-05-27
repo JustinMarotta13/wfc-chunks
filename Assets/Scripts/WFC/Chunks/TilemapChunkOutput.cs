@@ -10,12 +10,10 @@ namespace WaveFunctionCollapse
     {
         private ValuesManager<TileBase> valuesManager;
         private Tilemap outputImage;
-        private Grid grid;
 
-        public TilemapChunkOutput(ValuesManager<TileBase> valuesManager, Grid grid)
+        public TilemapChunkOutput(ValuesManager<TileBase> valuesManager)
         {
             this.valuesManager = valuesManager;
-            this.grid = grid;
         }
 
         public Tilemap OutputImage => outputImage;
@@ -44,7 +42,6 @@ namespace WaveFunctionCollapse
         private GameObject CreateGameObject()
         {
             GameObject gameObject = new GameObject("Chunk");
-            gameObject.transform.parent = this.grid.transform;
             this.outputImage = gameObject.AddComponent<Tilemap>();
             gameObject.AddComponent<TilemapRenderer>();
             return gameObject;
