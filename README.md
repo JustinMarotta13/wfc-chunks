@@ -1,5 +1,7 @@
 # wfc-chunks
-~ not gonna work :/ ~ An implementation of SunnyValleyStudio's wave function collapse algorithm to create a map of chunks.
+~ not gonna work :/ ~
+
+An implementation of SunnyValleyStudio's wave function collapse algorithm to create a map of chunks.
 https://github.com/SunnyValleyStudio/WaveFunctionCollapseUnityTilemapTutorial
 
 
